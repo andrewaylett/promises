@@ -1,0 +1,8 @@
+# Ignore IDEA files
+*.iml
+.idea
+
+# Ignore backup files
+*~
+# Ignore temp files
+.*.swp
