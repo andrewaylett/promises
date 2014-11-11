@@ -21,13 +21,22 @@ import java.util.function.Function;
 /**
  * A promise -- represents a future value.
  */
-@SuppressWarnings("UnusedParameters")
 public class Promise<T> {
+    private final Deferred<T> deferred;
+
+    protected Promise(Deferred<T> deferred) {
+        this.deferred = deferred;
+    }
+
     public <U> Promise<U> then(Function<T, U> then) {
-        return new Promise<>();
+        Deferred<U> next = new Deferred<>();
+        deferred.register(value -> next.resolve(then.apply(value)));
+        return next.promise;
     }
 
     public <U> Promise<U> then(FunctionReturningPromise<T, U> then) {
-        return new Promise<>();
+        Deferred<U> next = new Deferred<>();
+        deferred.register(value -> next.chain(then.apply(value).deferred));
+        return next.promise;
     }
 }

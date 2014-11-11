@@ -27,13 +27,15 @@ public class PromiseTest {
 
     @Test
     public void testThen() {
-        Promise<List<String>> result = new Promise<String>().then((String s) -> newArrayList(s));
+        Deferred<String> deferred = new Deferred<>();
+        Promise<List<String>> result = deferred.promise.then((String s) -> newArrayList(s));
         assertNotNull("Object should exist", result);
     }
 
     @Test
     public void testThenPromise() {
-        Promise<List<String>> result = new Promise<String>().then((String s) -> new Promise<>());
+        Deferred<String> deferred = new Deferred<>();
+        Promise<List<String>> result = deferred.promise.then((String s) -> new Deferred<List<String>>().promise);
         assertNotNull("Object should exist", result);
     }
 }
